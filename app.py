@@ -1,61 +1,106 @@
 from flask import Flask, render_template, request
 import os
-
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def index():
-    result = {}
+    resultado = None
 
-    if request.method == 'POST':
-        # Dados enviados pelo usuário
-        item_nome = request.form.get("item_nome", "")
-        peso_unitario = float(request.form.get("peso_unitario", 0))
-        unidades_por_embalagem = int(request.form.get("unidades_por_embalagem", 1))
-        valor_material_kg = float(request.form.get("valor_material_kg", 0))
-        porcentagem_perda = float(request.form.get("porcentagem_perda", 0))
-        valor_energia_kwh = float(request.form.get("valor_energia_kwh", 0))
-        consumo_maquina_kwh = float(request.form.get("consumo_maquina_kwh", 0))
-        horas_dia = 10  # 10h de produção fixa
-        producao_dia = int(request.form.get("producao_dia", 0))
-        producao_total = int(request.form.get("producao_total", 0))
+    if request.method == "POST":
+        # Dados gerais
+        nome_item = request.form.get("nome_item")
+        peso_unit = float(request.form.get("peso_unit"))
+        cavidades = int(request.form.get("cavidades"))
+        qtd_produzir = int(request.form.get("qtd_produzir"))
 
-        # Master
-        valor_master_kg = float(request.form.get("valor_master_kg", 0))
-        porcentagem_master = float(request.form.get("porcentagem_master", 0))
+        # Matéria-prima
+        preco_mat = float(request.form.get("preco_mat"))
+        perca = float(request.form.get("perca"))
+        preco_master = float(request.form.get("preco_master"))
+        porcent_master = float(request.form.get("porcent_master"))
 
-        # Cálculos principais
-        material_por_peca = peso_unitario / 1000  # gramas → kg
-        master_por_peca = material_por_peca * (porcentagem_master / 100)
+        # Máquina
+        hora_maquina = float(request.form.get("hora_maquina"))
+        ciclo_seg = float(request.form.get("ciclo_seg"))
 
-        custo_material_unit = material_por_peca * valor_material_kg
-        custo_master_unit = master_por_peca * valor_master_kg
+        # Embalagem
+        preco_emb_kg = float(request.form.get("preco_emb_kg"))
+        peso_emb = float(request.form.get("peso_emb"))
+        capacidade_emb = int(request.form.get("capacidade_emb"))
 
-        custo_energia_unit = (consumo_maquina_kwh * valor_energia_kwh) / producao_dia if producao_dia > 0 else 0
+        # Impostos e lucro
+        icms = float(request.form.get("icms"))
+        pis = float(request.form.get("pis"))
+        cofins = float(request.form.get("cofins"))
+        margem = float(request.form.get("margem"))
 
-        perda_unit = (custo_material_unit + custo_master_unit) * (porcentagem_perda / 100)
+        # CÁLCULOS --------------------------------------------------
 
-        preco_final = custo_material_unit + custo_master_unit + custo_energia_unit + perda_unit
+        # Material por ciclo
+        peso_ciclo_g = peso_unit * cavidades  
+        peso_ciclo_kg = peso_ciclo_g / 1000  
+
+        # Custo matéria-prima base
+        custo_mat_ciclo = peso_ciclo_kg * preco_mat
+
+        # Custo perca
+        custo_perca_ciclo = custo_mat_ciclo * (perca / 100)
+
+        # Custo master
+        master_kg_por_kg = porcent_master / 100
+        master_por_ciclo = peso_ciclo_kg * master_kg_por_kg
+        custo_master_ciclo = master_por_ciclo * preco_master
+
+        # Hora máquina por ciclo
+        custo_maquina_ciclo = (hora_maquina / 3600) * ciclo_seg
+
+        # Embalagem (saco dividido pela capacidade)
+        custo_embalagem_unit = (peso_emb / 1000) * preco_emb_kg / capacidade_emb
+
+        # Custo total do ciclo
+        custo_total_ciclo = (
+            custo_mat_ciclo +
+            custo_perca_ciclo +
+            custo_master_ciclo +
+            custo_maquina_ciclo
+        )
+
+        # Custo unitário antes de impostos
+        custo_unitario = custo_total_ciclo / cavidades
+
+        # Impostos
+        imposto_unit = custo_unitario * (icms + pis + cofins) / 100
+
+        # Total com embalagem
+        custo_unit_final_sem_lucro = custo_unitario + imposto_unit + custo_embalagem_unit
+
+        # Margem de lucro
+        custo_final_com_lucro = custo_unit_final_sem_lucro * (1 + margem / 100)
 
         # Produção total
-        total_material_kg = material_por_peca * producao_total
-        total_master_kg = master_por_peca * producao_total
+        ciclos_necessarios = qtd_produzir / cavidades
+        material_total_kg = (peso_unit * qtd_produzir) / 1000
+        master_total_kg = material_total_kg * master_kg_por_kg
 
-        dias_para_produzir = producao_total / producao_dia if producao_dia > 0 else 0
+        tempo_total_seg = ciclos_necessarios * ciclo_seg
+        horas_totais = tempo_total_seg / 3600
+        dias_totais = horas_totais / 10  # 10h por dia
 
-        result = {
-            "item_nome": item_nome,
-            "preco_final": round(preco_final, 4),
-            "custo_material_unit": round(custo_material_unit, 4),
-            "custo_master_unit": round(custo_master_unit, 4),
-            "custo_energia_unit": round(custo_energia_unit, 4),
-            "perda_unit": round(perda_unit, 4),
-            "total_material_kg": round(total_material_kg, 2),
-            "total_master_kg": round(total_master_kg, 2),
-            "dias_para_produzir": round(dias_para_produzir, 2)
+        resultado = {
+            "nome_item": nome_item,
+            "custo_unit": round(custo_unitario, 4),
+            "custo_emb_unit": round(custo_embalagem_unit, 4),
+            "imposto_unit": round(imposto_unit, 4),
+            "custo_final_lucro": round(custo_final_com_lucro, 4),
+            "custo_master_unit": round(custo_master_ciclo / cavidades, 4),
+            "material_total_kg": round(material_total_kg, 3),
+            "master_total_kg": round(master_total_kg, 3),
+            "dias_totais": round(dias_totais, 2),
+            "perca_unit": round(custo_perca_ciclo / cavidades, 4),
+            "maquina_unit": round(custo_maquina_ciclo / cavidades, 4)
         }
 
-    return render_template("index.html", result=result)
+    return render_template("index.html", resultado=resultado)
 
 
 # -------------------------------
