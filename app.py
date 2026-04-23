@@ -99,7 +99,7 @@ def index():
         # -------------------------
         # 🔹 Produção total
         # -------------------------
-        if qtd_producao > 0:
+        if qtd_producao >= 0:
             material_total_kg = peso_unit_kg * qtd_producao
             master_total_kg = material_total_kg * master_por_kg
             perca_total_kg = material_total_kg * (porcent_perca / 100)
