@@ -118,9 +118,9 @@
             <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
             <h2>Resultado - {{ nome_item }}</h2>
 
-            <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
+            <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }} </p>
             <b>Custo Master (un):</b> R$ {{ custo_master_unit }}
-            <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
+            <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }} </p>
             <p><b>Custo Embalagem (un):</b> R$ {{ custo_emb_unit }}</p>
             <p><b>Custo Perda (un):</b> R$ {{ custo_perca_unit }}</p>
             <p><b>Impostos (un):</b> R$ {{ custo_imposto_unit }}</p>
@@ -129,12 +129,11 @@
             <hr>
             <h3>📋 Dados Informados</h3>
 
-            <p>Material: R$ {{ request.form.preco_material }} /kg</p>
-            <p>Master: R$ {{ request.form.preco_master }} /kg</p>
-            <p>% Master: {{ request.form.porcent_master }}%</p>
-            <p>% Perda: {{ request.form.porcent_perca }}%</p>
-            <p>Hora máquina: R$ {{ request.form.hora_maquina }}</p>
-            <p>Embalagem: R$ {{ request.form.preco_emb }} /kg</p>
+            <p>Material: R$ {{ request.form.preco_material }},00 /kg</p>
+            <p>Master: R$ {{ request.form.preco_master }},00 /kg</p>
+            <p>Perdas: {{ request.form.porcent_perca }}%</p>
+            <p>Hora máquina: R$ {{ request.form.hora_maquina }},00 /Hr</p>
+            <p>Embalagem: R$ {{ request.form.preco_emb }},00 /kg</p>
             <p>ICMS aplicado: {{ request.form.icms }}%</p>
             <p>PIS aplicado: {{ request.form.pis }}%</p>
             <p>COFINS aplicado: {{ request.form.cofins }}%</p>
