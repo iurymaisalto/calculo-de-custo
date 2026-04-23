@@ -119,7 +119,7 @@
             <h2>Resultado - {{ nome_item }}</h2>
 
             <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
-            <p><b>Custo Master (un):</b> R$ {{ custo_master_unit }}</p>
+            <b>Custo Master (un):</b> R$ {{ custo_master_unit }}
             <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
             <p><b>Custo Embalagem (un):</b> R$ {{ custo_emb_unit }}</p>
             <p><b>Custo Perda (un):</b> R$ {{ custo_perca_unit }}</p>
@@ -141,11 +141,6 @@
             <p>Margem aplicada: {{ request.form.margem }}%</p>
             <hr>
             
-            <hr>
-
-            <h2>📦 Resumo da Produção</h2>
-      
-            <hr>
             <h2>📦 Produção</h2>
 
             <p>Material total: {{ material_total_kg }} kg</p>
