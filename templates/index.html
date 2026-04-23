@@ -2,159 +2,135 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemiplas — Cálculo Industrial</title>
+    <title>Lemiplas - Sistema de Custo Industrial</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script defer src="/static/script.js"></script>
 </head>
 
 <body>
 
-    <!-- Fundo com logo -->
-    <div class="background-logo"></div>
-
-    <!-- Botões topo -->
-    <header>
-        <img src="/static/img/logo.png" class="logo">
-        <button id="themeToggle" class="theme-btn">🌙</button>
-    </header>
-
-    <main>
-
-        <h1 class="title">Cálculo Industrial Lemiplas</h1>
-<form method="POST">
-
-<div class="form-grid">
-
-    <!-- CARD 1 -->
-    <div class="card">
-        <h2>Item</h2>
-
-        <label>Nome do Item</label>
-        <input type="text" name="nome_item">
-
-        <label>Peso unitário (g)</label>
-        <input type="number" step="0.01" name="peso_unitario">
-
-        <label>Cavidades</label>
-        <input type="number" name="cavidades">
-
-        <label>Tempo ciclo (seg)</label>
-        <input type="number" step="0.01" name="ciclo_seg">
+    <!-- Botão modo escuro -->
+    <div class="toggle-container">
+        <button id="toggleMode" class="toggle-btn">🌙 Modo Escuro</button>
     </div>
 
-    <!-- CARD 2 -->
-    <div class="card">
-        <h2>Material</h2>
+    <div class="container">
+        <h1>Lemiplas</h1>
+        <h2>Sistema de Cálculo de Custo Industrial</h2>
 
-        <label>Preço kg material</label>
-        <input type="number" step="0.01" name="preco_material">
+        <form method="POST">
 
-        <label>% Perda</label>
-        <input type="number" step="0.01" name="porcent_perca">
+            <!-- Nome do item -->
+            <label>Nome do Item</label>
+            <input type="text" name="nome_item" placeholder="Ex.: Pote 500ml" required>
 
-        <label>Preço kg Master</label>
-        <input type="number" step="0.01" name="preco_master">
+            <h2>🔹 Material</h2>
 
-        <label>% Master</label>
-        <input type="number" step="0.01" name="porcent_master">
-    </div>
+            <label>Preço do kg do material (R$)</label>
+            <input type="number" step="0.01" name="preco_material" required>
 
-    <!-- CARD 3 -->
-    <div class="card">
-        <h2>Máquina</h2>
+            <label>Peso do produto UNITÁRIO (g)</label>
+            <input type="number" step="0.01" name="peso_unitario" required>
 
-        <label>Hora máquina</label>
-        <input type="number" step="0.01" name="hora_maquina">
-    </div>
+            <label>Cavidades por ciclo</label>
+            <input type="number" name="cavidades" required>
 
-    <!-- CARD 4 -->
-    <div class="card">
-        <h2>Embalagem</h2>
+            <label>Tempo do ciclo (segundos)</label>
+            <input type="number" step="0.01" name="ciclo_seg" required>
 
-        <label>Preço kg embalagem</label>
-        <input type="number" step="0.01" name="preco_emb">
 
-        <label>Peso embalagem (g)</label>
-        <input type="number" step="0.01" name="peso_emb">
+            <h2>🔹 Master</h2>
 
-        <label>Capacidade</label>
-        <input type="number" name="capacidade_emb">
-    </div>
+            <label>Preço do kg do master (R$)</label>
+            <input type="number" step="0.01" name="preco_master" required>
 
-    <!-- CARD 5 -->
-    <div class="card">
-        <h2>Impostos</h2>
+            <label>% de master por kg</label>
+            <input type="number" step="0.01" name="porcent_master" required>
 
-        <label>ICMS %</label>
-        <input type="number" step="0.01" name="icms">
 
-        <label>PIS %</label>
-        <input type="number" step="0.01" name="pis">
+            <h2>🔹 Processo</h2>
 
-        <label>COFINS %</label>
-        <input type="number" step="0.01" name="cofins">
+            <label>Valor da hora máquina (R$)</label>
+            <input type="number" step="0.01" name="hora_maquina" required>
 
-        <label>Margem de Lucro %</label>
-        <input type="number" step="0.01" name="margem">
-    </div>
+            <label>% de perda</label>
+            <input type="number" step="0.01" name="porcent_perca" required>
 
-    <!-- CARD 6 (OPCIONAL PRODUÇÃO) -->
-    <div class="card">
-        <h2>Produção (Opcional)</h2>
 
-        <label>Quantidade a produzir</label>
-        <input type="number" name="qtd_producao">
-    </div>
+            <h2>🔹 Embalagem</h2>
 
-</div>
+            <label>Preço do kg da embalagem (R$)</label>
+            <input type="number" step="0.01" name="preco_emb" required>
 
-<button type="submit">Calcular</button>
+            <label>Peso da embalagem (g)</label>
+            <input type="number" step="0.01" name="peso_emb" required>
 
-</form>
+            <label>Capacidade da embalagem (unidades por saco)</label>
+            <input type="number" name="capacidade_emb" required>
 
-        <!-- RESULTADO -->
-        {% if resultado %}
-        
-        <div class="result-card">
-            
-            <h2>Resultado — {{ resultado.nome_item }}</h2>
-            <h3>📋 Dados Informados</h3>
+            <h2>🔹 Impostos (%)</h2>
 
-            <p>Material: R$ {{ request.form.preco_material }} /kg</p>
-            <p>Master: R$ {{ request.form.preco_master }} /kg</p>
-            <p>% Master: {{ request.form.porcent_master }}%</p>
-            <p>% Perda: {{ request.form.porcent_perca }}%</p>
-            <p>Hora máquina: R$ {{ request.form.hora_maquina }}</p>
-            <p>Embalagem: R$ {{ request.form.preco_emb }} /kg</p>
-            <p><strong>Custo unitário (matéria):</strong> R$ {{ resultado.custo_unit }}</p>
-            <p><strong>Custo master unidade:</strong> R$ {{ resultado.custo_master_unit }}</p>
-            <p><strong>Custo embalagem unidade:</strong> R$ {{ resultado.custo_emb_unit }}</p>
-            <p><strong>Custo perdas por unidade:</strong> R$ {{ resultado.perca_unit }}</p>
-            <p><strong>Custo máquina por unidade:</strong> R$ {{ resultado.maquina_unit }}</p>
-            <p><strong>Impostos por unidade:</strong> R$ {{ resultado.imposto_unit }}</p>
+            <label>ICMS (%)</label>
+            <input type="number" step="0.01" name="icms" required>
+
+            <label>PIS (%)</label>
+            <input type="number" step="0.01" name="pis" required>
+
+            <label>COFINS (%)</label>
+            <input type="number" step="0.01" name="cofins" required>
+
+
+            <h2>🔹 Margem de lucro (%)</h2>
+            <input type="number" step="0.01" name="margem" required>
+
+
+            <h2>🔹 Produção</h2>
+
+            <label>Quantidade total a produzir (unidades)</label>
+            <input type="number" name="qtd_producao" required>
+
+
+            <button type="submit">Calcular Custo</button>
+            <button type="button" id="clearBtn" class="clear-btn">Limpar Tudo</button>
+        </form>
+
+
+
+
+        {% if result %}
+        <div class="result-box" id="resultBox">
+
+            <h2>Resultado - {{ nome_item }}</h2>
+
+            <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
+            <p><b>Custo Master (un):</b> R$ {{ custo_master_unit }}</p>
+            <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
+            <p><b>Custo Embalagem (un):</b> R$ {{ custo_emb_unit }}</p>
+            <p><b>Custo Perda (un):</b> R$ {{ custo_perca_unit }}</p>
+            <p><b>Impostos (un):</b> R$ {{ custo_imposto_unit }}</p>
 
             <hr>
 
-            <p><strong>🎯 Custo final com lucro:</strong> <span class="final-price">R$ {{ resultado.custo_final_lucro }}</span></p>
+            <h2>💰 Preço Final por Unidade</h2>
+            <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
 
             <hr>
 
-            <h3>Produção total</h3>
-            {% if material_total_kg %}
-            <hr>
-            <h2>📦 Produção</h2>
+            <h2>📦 Resumo da Produção</h2>
+            <p>Material total: <b>{{ material_total_kg }} kg</b></p>
+            <p>Master total: <b>{{ master_total_kg }} kg</b></p>
+            <p>Perca total: <b>{{ perca_total_kg }} kg</b></p>
+            <p>Produção em 10h: <b>{{ unidades_por_dia }} un/dia</b></p>
+            <p>Dias necessários: <b>{{ dias_para_produzir }} dias</b></p>
 
-            <p>Material total: {{ material_total_kg }} kg</p>
-            <p>Master total: {{ master_total_kg }} kg</p>
-            <p>Perca total: {{ perca_total_kg }} kg</p>
-            <p>Produção diária: {{ unidades_por_dia }} un</p>
-            <p>Dias necessários: {{ dias_para_produzir }}</p>
-            {% endif %}
         </div>
+
+        <script>
+            showResult();
+        </script>
         {% endif %}
 
-    </main>
+    </div>
 
-    <script src="/static/script.js"></script>
 </body>
 </html>
