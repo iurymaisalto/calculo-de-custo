@@ -74,7 +74,7 @@
         <label>Peso embalagem (g)</label>
         <input type="number" step="0.01" name="peso_emb">
 
-        <label>Capacidade</label>
+        <label>Quantidade de peça por embalagem</label>
         <input type="number" name="capacidade_emb">
     </div>
 
@@ -114,7 +114,8 @@
 
         {% if result %}
         <div class="result-box" id="resultBox">
-
+            <h2>💰 Preço Final por Unidade</h2>
+            <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
             <h2>Resultado - {{ nome_item }}</h2>
 
             <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
@@ -139,9 +140,7 @@
             <p>COFINS aplicado: {{ request.form.cofins }}%</p>
             <p>Margem aplicada: {{ request.form.margem }}%</p>
             <hr>
-            <h2>💰 Preço Final por Unidade</h2>
-            <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
-
+            
             <hr>
 
             <h2>📦 Resumo da Produção</h2>
