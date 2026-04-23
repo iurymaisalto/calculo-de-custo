@@ -18,82 +18,96 @@
         <h1>Lemiplas</h1>
         <h2>Sistema de Cálculo de Custo Industrial</h2>
 
-        <form method="POST">
+<form method="POST">
 
-            <!-- Nome do item -->
-            <label>Nome do Item</label>
-            <input type="text" name="nome_item" placeholder="Ex.: Pote 500ml" required>
+<div class="form-grid">
 
-            <h2>🔹 Material</h2>
+    <!-- CARD 1 -->
+    <div class="card">
+        <h2>Item</h2>
 
-            <label>Preço do kg do material (R$)</label>
-            <input type="number" step="0.01" name="preco_material" required>
+        <label>Nome do Item</label>
+        <input type="text" name="nome_item">
 
-            <label>Peso do produto UNITÁRIO (g)</label>
-            <input type="number" step="0.01" name="peso_unitario" required>
+        <label>Peso unitário (g)</label>
+        <input type="number" step="0.01" name="peso_unitario">
 
-            <label>Cavidades por ciclo</label>
-            <input type="number" name="cavidades" required>
+        <label>Cavidades</label>
+        <input type="number" name="cavidades">
 
-            <label>Tempo do ciclo (segundos)</label>
-            <input type="number" step="0.01" name="ciclo_seg" required>
+        <label>Tempo ciclo (seg)</label>
+        <input type="number" step="0.01" name="ciclo_seg">
+    </div>
 
+    <!-- CARD 2 -->
+    <div class="card">
+        <h2>Material</h2>
 
-            <h2>🔹 Master</h2>
+        <label>Preço kg material</label>
+        <input type="number" step="0.01" name="preco_material">
 
-            <label>Preço do kg do master (R$)</label>
-            <input type="number" step="0.01" name="preco_master" required>
+        <label>% Perda</label>
+        <input type="number" step="0.01" name="porcent_perca">
 
-            <label>% de master por kg</label>
-            <input type="number" step="0.01" name="porcent_master" required>
+        <label>Preço kg Master</label>
+        <input type="number" step="0.01" name="preco_master">
 
+        <label>% Master</label>
+        <input type="number" step="0.01" name="porcent_master">
+    </div>
 
-            <h2>🔹 Processo</h2>
+    <!-- CARD 3 -->
+    <div class="card">
+        <h2>Máquina</h2>
 
-            <label>Valor da hora máquina (R$)</label>
-            <input type="number" step="0.01" name="hora_maquina" required>
+        <label>Hora máquina</label>
+        <input type="number" step="0.01" name="hora_maquina">
+    </div>
 
-            <label>% de perda</label>
-            <input type="number" step="0.01" name="porcent_perca" required>
+    <!-- CARD 4 -->
+    <div class="card">
+        <h2>Embalagem</h2>
 
+        <label>Preço kg embalagem</label>
+        <input type="number" step="0.01" name="preco_emb">
 
-            <h2>🔹 Embalagem</h2>
+        <label>Peso embalagem (g)</label>
+        <input type="number" step="0.01" name="peso_emb">
 
-            <label>Preço do kg da embalagem (R$)</label>
-            <input type="number" step="0.01" name="preco_emb" required>
+        <label>Capacidade</label>
+        <input type="number" name="capacidade_emb">
+    </div>
 
-            <label>Peso da embalagem (g)</label>
-            <input type="number" step="0.01" name="peso_emb" required>
+    <!-- CARD 5 -->
+    <div class="card">
+        <h2>Impostos</h2>
 
-            <label>Capacidade da embalagem (unidades por saco)</label>
-            <input type="number" name="capacidade_emb" required>
+        <label>ICMS</label>
+        <input type="number" step="0.01" name="icms">
 
-            <h2>🔹 Impostos (%)</h2>
+        <label>PIS</label>
+        <input type="number" step="0.01" name="pis">
 
-            <label>ICMS (%)</label>
-            <input type="number" step="0.01" name="icms" required>
+        <label>COFINS</label>
+        <input type="number" step="0.01" name="cofins">
 
-            <label>PIS (%)</label>
-            <input type="number" step="0.01" name="pis" required>
+        <label>Margem</label>
+        <input type="number" step="0.01" name="margem">
+    </div>
 
-            <label>COFINS (%)</label>
-            <input type="number" step="0.01" name="cofins" required>
+    <!-- CARD 6 (OPCIONAL PRODUÇÃO) -->
+    <div class="card">
+        <h2>Produção (Opcional)</h2>
 
+        <label>Quantidade a produzir</label>
+        <input type="number" name="qtd_producao">
+    </div>
 
-            <h2>🔹 Margem de lucro (%)</h2>
-            <input type="number" step="0.01" name="margem" required>
+</div>
 
+<button type="submit">Calcular</button>
 
-            <h2>🔹 Produção</h2>
-
-            <label>Quantidade total a produzir (unidades)</label>
-            <input type="number" name="qtd_producao" required>
-
-
-            <button type="submit">Calcular Custo</button>
-            <button type="button" id="clearBtn" class="clear-btn">Limpar Tudo</button>
-        </form>
-
+</form>
 
 
 
