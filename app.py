@@ -75,8 +75,14 @@ def index():
         # -------------------------
         # 🔹 Impostos por unidade
         # -------------------------
-        imposto_total = icms + pis + cofins
-        custo_imposto_unit = imposto_total / 100
+        icms_pct = float(request.form.get("icms", 0)) / 100
+        pis_pct = float(request.form.get("pis", 0)) / 100
+        cofins_pct = float(request.form.get("cofins", 0)) / 100
+        margem_pct = float(request.form.get("margem", 0)) / 100
+        custo_imposto_unit = custo_base * (icms_pct + pis_pct + cofins_pct)
+       
+
+      
 
         # -------------------------
         # 🔹 Custo total sem lucro
