@@ -98,12 +98,19 @@ def index():
         # -------------------------
         # 🔹 Produção total
         # -------------------------
-        material_total_kg = (peso_unit_kg * qtd_producao)
-        master_total_kg = material_total_kg * master_por_kg
-        perca_total_kg = material_total_kg * (porcent_perca / 100)
+        if qtd_producao > 0:
+            material_total_kg = peso_unit_kg * qtd_producao
+            master_total_kg = material_total_kg * master_por_kg
+            perca_total_kg = material_total_kg * (porcent_perca / 100)
 
-        unidades_por_dia = unidades_por_hora * 10  # 10 horas por dia
-        dias_para_produzir = qtd_producao / unidades_por_dia if unidades_por_dia > 0 else 0
+            unidades_por_dia = unidades_por_hora * 10
+            dias_para_produzir = qtd_producao / unidades_por_dia if unidades_por_dia > 0 else 0
+        else:
+            material_total_kg = None
+            master_total_kg = None
+            perca_total_kg = None
+            dias_para_produzir = None
+            unidades_por_dia = None
 
         return render_template(
             "index.html",
