@@ -116,6 +116,18 @@
 
             <h2>Resultado - {{ nome_item }}</h2>
 
+            <h3>📋 Dados Informados</h3>
+
+            <p>Material: R$ {{ request.form.preco_material }} /kg</p>
+            <p>Master: R$ {{ request.form.preco_master }} /kg</p>
+            <p>% Master: {{ request.form.porcent_master }}%</p>
+            <p>% Perda: {{ request.form.porcent_perca }}%</p>
+            <p>Hora máquina: R$ {{ request.form.hora_maquina }}</p>
+            <p>Embalagem: R$ {{ request.form.preco_emb }} /kg</p>
+            
+
+            <hr>
+            
             <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
             <p><b>Custo Master (un):</b> R$ {{ custo_master_unit }}</p>
             <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
@@ -131,12 +143,16 @@
             <hr>
 
             <h2>📦 Resumo da Produção</h2>
-            <p>Material total: <b>{{ material_total_kg }} kg</b></p>
-            <p>Master total: <b>{{ master_total_kg }} kg</b></p>
-            <p>Perca total: <b>{{ perca_total_kg }} kg</b></p>
-            <p>Produção em 10h: <b>{{ unidades_por_dia }} un/dia</b></p>
-            <p>Dias necessários: <b>{{ dias_para_produzir }} dias</b></p>
+         {% if material_total_kg %}
+<hr>
+<h2>📦 Produção</h2>
 
+<p>Material total: {{ material_total_kg }} kg</p>
+<p>Master total: {{ master_total_kg }} kg</p>
+<p>Perca total: {{ perca_total_kg }} kg</p>
+<p>Produção diária: {{ unidades_por_dia }} un</p>
+<p>Dias necessários: {{ dias_para_produzir }}</p>
+{% endif %}
         </div>
 
         <script>
