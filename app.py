@@ -78,9 +78,6 @@ def index():
         imposto_total = icms + pis + cofins
         custo_imposto_unit = imposto_total / 100
        
-
-      
-
         # -------------------------
         # 🔹 Custo total sem lucro
         # -------------------------
