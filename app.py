@@ -105,7 +105,7 @@ def index():
             perca_total_kg = material_total_kg * (porcent_perca / 100)
 
             unidades_por_dia = unidades_por_hora * 10
-            dias_para_produzir = qtd_producao / unidades_por_dia if unidades_por_dia > 0 else 0
+            dias_para_produzir = qtd_producao / unidades_por_dia if unidades_por_dia > 0 
         if qtd_producao =< 0:
             material_total_kg = None
             master_total_kg = None
