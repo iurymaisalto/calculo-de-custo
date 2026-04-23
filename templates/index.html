@@ -1,173 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemiplas • Cálculo de Custos</title>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #0e0e11;
-            color: white;
-            background-image: url('logo-translucido.png');
-            background-size: 500px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-            opacity: 0.98;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: rgba(0,0,0,0.80);
-            padding: 30px;
-            border-radius: 14px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        h1 {
-            text-align: center;
-            color: #4aa3ff;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            margin-top: 40px;
-            color: #4aa3ff;
-            border-left: 4px solid #4aa3ff;
-            padding-left: 10px;
-        }
-
-        label {
-            font-weight: bold;
-            margin-top: 15px;
-            display: block;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            margin-top: 5px;
-            font-size: 16px;
-        }
-
-        .button {
-            width: 100%;
-            padding: 14px;
-            background: #4aa3ff;
-            border: none;
-            border-radius: 10px;
-            margin-top: 25px;
-            font-size: 18px;
-            cursor: pointer;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .button:hover {
-            background: #74bdff;
-        }
-
-        .resultado-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #11141a;
-            border-radius: 12px;
-            border: 1px solid #4aa3ff;
-        }
-
-    </style>
+    <title>Lemiplas - Sistema de Custo Industrial</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="/static/script.js"></script>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Cálculo de Custos - Lemiplas</h1>
+    <!-- Botão modo escuro -->
+    <div class="toggle-container">
+        <button id="toggleMode" class="toggle-btn">🌙 Modo Escuro</button>
+    </div>
 
-    <h2>Informações do Item</h2>
+    <div class="container">
+        <h1>Lemiplas</h1>
+        <h2>Sistema de Cálculo de Custo Industrial</h2>
 
-    <label>Nome do item (Pote, Tampa, etc)</label>
-    <input id="nomeItem" placeholder="Digite o nome do item">
+        <form method="POST">
 
-    <label>Peso unitário do item (g)</label>
-    <input id="peso" type="number">
+            <!-- Nome do item -->
+            <label>Nome do Item</label>
+            <input type="text" name="nome_item" placeholder="Ex.: Pote 500ml" required>
 
-    <label>Valor do kg do material (R$)</label>
-    <input id="valorKg" type="number">
+            <h2>🔹 Material</h2>
 
-    <label>Valor do kg do master (R$)</label>
-    <input id="valorMaster" type="number">
+            <label>Preço do kg do material (R$)</label>
+            <input type="number" step="0.01" name="preco_material" required>
 
-    <label>Percentual de master (%)</label>
-    <input id="percMaster" type="number">
+            <label>Peso do produto UNITÁRIO (g)</label>
+            <input type="number" step="0.01" name="peso_unitario" required>
 
-    <label>Perca (%)</label>
-    <input id="perca" type="number">
+            <label>Cavidades por ciclo</label>
+            <input type="number" name="cavidades" required>
 
-    <h2>Produção</h2>
+            <label>Tempo do ciclo (segundos)</label>
+            <input type="number" step="0.01" name="ciclo_seg" required>
 
-    <label>Quantas unidades irá produzir?</label>
-    <input id="qtdProducao" type="number">
 
-    <label>Produção por hora (unidades)</label>
-    <input id="producaoHora" type="number">
+            <h2>🔹 Master</h2>
 
-    <button class="button" onclick="calcular()">Calcular</button>
+            <label>Preço do kg do master (R$)</label>
+            <input type="number" step="0.01" name="preco_master" required>
 
-    <div id="resultado" class="resultado-box" style="display:none;"></div>
-</div>
+            <label>% de master por kg</label>
+            <input type="number" step="0.01" name="porcent_master" required>
 
-<script>
-function calcular() {
 
-    let nome = document.getElementById("nomeItem").value;
-    let peso = Number(document.getElementById("peso").value);
-    let valorKg = Number(document.getElementById("valorKg").value);
-    let valorMaster = Number(document.getElementById("valorMaster").value);
-    let percMaster = Number(document.getElementById("percMaster").value) / 100;
-    let perca = Number(document.getElementById("perca").value) / 100;
-    let qtd = Number(document.getElementById("qtdProducao").value);
-    let prodHora = Number(document.getElementById("producaoHora").value);
+            <h2>🔹 Processo</h2>
 
-    let pesoKg = peso / 1000;
+            <label>Valor da hora máquina (R$)</label>
+            <input type="number" step="0.01" name="hora_maquina" required>
 
-    let materialTotal = qtd * pesoKg;
-    let masterTotal = materialTotal * percMaster;
-    let percaKg = (materialTotal + masterTotal) * perca;
+            <label>% de perda</label>
+            <input type="number" step="0.01" name="porcent_perca" required>
 
-    let totalGeralKg = materialTotal + masterTotal + percaKg;
 
-    let custoMaterial = totalGeralKg * valorKg;
-    let custoMaster = masterTotal * valorMaster;
+            <h2>🔹 Embalagem</h2>
 
-    let custoUnit = (custoMaterial + custoMaster) / qtd;
+            <label>Preço do kg da embalagem (R$)</label>
+            <input type="number" step="0.01" name="preco_emb" required>
 
-    let horas = qtd / prodHora;
-    let dias = horas / 10;
+            <label>Peso da embalagem (g)</label>
+            <input type="number" step="0.01" name="peso_emb" required>
 
-    document.getElementById("resultado").style.display = "block";
+            <label>Capacidade da embalagem (unidades por saco)</label>
+            <input type="number" name="capacidade_emb" required>
 
-    document.getElementById("resultado").innerHTML = `
-        <h2>Resumo</h2>
-        <p><b>Item:</b> ${nome}</p>
-        <p><b>Material total (kg):</b> ${materialTotal.toFixed(3)}</p>
-        <p><b>Master total (kg):</b> ${masterTotal.toFixed(3)}</p>
-        <p><b>Perca total (kg):</b> ${percaKg.toFixed(3)}</p>
-        <p><b>Total geral (kg):</b> ${totalGeralKg.toFixed(3)}</p>
-        <p><b>Custo do material:</b> R$ ${custoMaterial.toFixed(2)}</p>
-        <p><b>Custo do master:</b> R$ ${custoMaster.toFixed(2)}</p>
-        <p><b>Custo unitário (${nome}):</b> <b>R$ ${custoUnit.toFixed(4)}</b></p>
-        <hr>
-        <p><b>Dias necessários (10h/dia):</b> ${dias.toFixed(2)} dias</p>
-    `;
-}
-</script>
+            <h2>🔹 Impostos (%)</h2>
+
+            <label>ICMS (%)</label>
+            <input type="number" step="0.01" name="icms" required>
+
+            <label>PIS (%)</label>
+            <input type="number" step="0.01" name="pis" required>
+
+            <label>COFINS (%)</label>
+            <input type="number" step="0.01" name="cofins" required>
+
+
+            <h2>🔹 Margem de lucro (%)</h2>
+            <input type="number" step="0.01" name="margem" required>
+
+
+            <h2>🔹 Produção</h2>
+
+            <label>Quantidade total a produzir (unidades)</label>
+            <input type="number" name="qtd_producao" required>
+
+
+            <button type="submit">Calcular Custo</button>
+            <button type="button" id="clearBtn" class="clear-btn">Limpar Tudo</button>
+        </form>
+
+
+
+
+        {% if result %}
+        <div class="result-box" id="resultBox">
+
+            <h2>Resultado - {{ nome_item }}</h2>
+
+            <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
+            <p><b>Custo Master (un):</b> R$ {{ custo_master_unit }}</p>
+            <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
+            <p><b>Custo Embalagem (un):</b> R$ {{ custo_emb_unit }}</p>
+            <p><b>Custo Perda (un):</b> R$ {{ custo_perca_unit }}</p>
+            <p><b>Impostos (un):</b> R$ {{ custo_imposto_unit }}</p>
+
+            <hr>
+
+            <h2>💰 Preço Final por Unidade</h2>
+            <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
+
+            <hr>
+
+            <h2>📦 Resumo da Produção</h2>
+            <p>Material total: <b>{{ material_total_kg }} kg</b></p>
+            <p>Master total: <b>{{ master_total_kg }} kg</b></p>
+            <p>Perca total: <b>{{ perca_total_kg }} kg</b></p>
+            <p>Produção em 10h: <b>{{ unidades_por_dia }} un/dia</b></p>
+            <p>Dias necessários: <b>{{ dias_para_produzir }} dias</b></p>
+
+        </div>
+
+        <script>
+            showResult();
+        </script>
+        {% endif %}
+
+    </div>
 
 </body>
 </html>
