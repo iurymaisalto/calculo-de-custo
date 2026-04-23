@@ -1,166 +1,130 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Lemiplas - Sistema de Custo Industrial</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script defer src="/static/script.js"></script>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cálculo de Custo</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f1f1f1;
+    }
 
+    h2 {
+        text-align: center;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .row div {
+        flex: 1;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #0077ff;
+        color: white;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        background: #005ccc;
+    }
+
+    #resultado {
+        margin-top: 30px;
+        padding: 20px;
+        background: #e9e9e9;
+        border-radius: 10px;
+    }
+</style>
+</head>
 <body>
 
-    <!-- Botão modo escuro -->
-    <div class="toggle-container">
-        <button id="toggleMode" class="toggle-btn">🌙 Modo Escuro</button>
-    </div>
+<div class="container">
+    <h2>Calculadora de Custo</h2>
 
-    <div class="container">
-        <h1>Lemiplas</h1>
-        <h2>Sistema de Cálculo de Custo Industrial</h2>
-
-<form method="POST">
-
-<div class="form-grid">
-
-    <!-- CARD 1 -->
-    <div class="card">
-        <h2>Item</h2>
-
-        <label>Nome do Item</label>
-        <input type="text" name="nome_item">
-
-        <label>Peso unitário (g)</label>
-        <input type="number" step="0.01" name="peso_unitario">
-
-        <label>Cavidades</label>
-        <input type="number" name="cavidades">
-
-        <label>Tempo ciclo (seg)</label>
-        <input type="number" step="0.01" name="ciclo_seg">
-    </div>
-
-    <!-- CARD 2 -->
-    <div class="card">
-        <h2>Material</h2>
-
-        <label>Preço kg material</label>
-        <input type="number" step="0.01" name="preco_material">
-
-        <label>% Perda</label>
-        <input type="number" step="0.01" name="porcent_perca">
-
-        <label>Preço kg Master</label>
-        <input type="number" step="0.01" name="preco_master">
-
-        <label>% Master</label>
-        <input type="number" step="0.01" name="porcent_master">
-    </div>
-
-    <!-- CARD 3 -->
-    <div class="card">
-        <h2>Máquina</h2>
-
-        <label>Hora máquina</label>
-        <input type="number" step="0.01" name="hora_maquina">
-    </div>
-
-    <!-- CARD 4 -->
-    <div class="card">
-        <h2>Embalagem</h2>
-
-        <label>Preço kg embalagem</label>
-        <input type="number" step="0.01" name="preco_emb">
-
-        <label>Peso embalagem (g)</label>
-        <input type="number" step="0.01" name="peso_emb">
-
-        <label>Capacidade</label>
-        <input type="number" name="capacidade_emb">
-    </div>
-
-    <!-- CARD 5 -->
-    <div class="card">
-        <h2>Impostos</h2>
-
-        <label>ICMS</label>
-        <input type="number" step="0.01" name="icms">
-
-        <label>PIS</label>
-        <input type="number" step="0.01" name="pis">
-
-        <label>COFINS</label>
-        <input type="number" step="0.01" name="cofins">
-
-        <label>Margem</label>
-        <input type="number" step="0.01" name="margem">
-    </div>
-
-    <!-- CARD 6 (OPCIONAL PRODUÇÃO) -->
-    <div class="card">
-        <h2>Produção (Opcional)</h2>
-
-        <label>Quantidade a produzir</label>
-        <input type="number" name="qtd_producao">
-    </div>
-
-</div>
-
-<button type="submit">Calcular</button>
-
-</form>
-
-
-
-        {% if result %}
-        <div class="result-box" id="resultBox">
-
-            <h2>Resultado - {{ nome_item }}</h2>
-
-            <h3>📋 Dados Informados</h3>
-
-            <p>Material: R$ {{ request.form.preco_material }} /kg</p>
-            <p>Master: R$ {{ request.form.preco_master }} /kg</p>
-            <p>% Master: {{ request.form.porcent_master }}%</p>
-            <p>% Perda: {{ request.form.porcent_perca }}%</p>
-            <p>Hora máquina: R$ {{ request.form.hora_maquina }}</p>
-            <p>Embalagem: R$ {{ request.form.preco_emb }} /kg</p>
-            
-
-            <hr>
-            
-            <p><b>Custo Material (un):</b> R$ {{ custo_material_unit }}</p>
-            <p><b>Custo Master (un):</b> R$ {{ custo_master_unit }}</p>
-            <p><b>Custo Hora Máquina (un):</b> R$ {{ custo_hora_unit }}</p>
-            <p><b>Custo Embalagem (un):</b> R$ {{ custo_emb_unit }}</p>
-            <p><b>Custo Perda (un):</b> R$ {{ custo_perca_unit }}</p>
-            <p><b>Impostos (un):</b> R$ {{ custo_imposto_unit }}</p>
-
-            <hr>
-
-            <h2>💰 Preço Final por Unidade</h2>
-            <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
-
-            <hr>
-
-            <h2>📦 Resumo da Produção</h2>
-         {% if material_total_kg %}
-<hr>
-<h2>📦 Produção</h2>
-
-<p>Material total: {{ material_total_kg }} kg</p>
-<p>Master total: {{ master_total_kg }} kg</p>
-<p>Perca total: {{ perca_total_kg }} kg</p>
-<p>Produção diária: {{ unidades_por_dia }} un</p>
-<p>Dias necessários: {{ dias_para_produzir }}</p>
-{% endif %}
+    <!-- LINHA 1 -->
+    <div class="row">
+        <div>
+            <label>Peso do Produto (g):</label>
+            <input type="number" id="peso" placeholder="Ex: 22">
         </div>
 
-        <script>
-            showResult();
-        </script>
-        {% endif %}
-
+        <div>
+            <label>Perda (%):</label>
+            <input type="number" id="perda" placeholder="Ex: 3">
+        </div>
     </div>
+
+    <!-- LINHA 2 -->
+    <div class="row">
+        <div>
+            <label>Preço do Material (kg):</label>
+            <input type="number" id="preco" placeholder="Ex: 23">
+        </div>
+
+        <div>
+            <label>Quantidade do Pedido (opcional):</label>
+            <input type="number" id="pedido" placeholder="Deixe vazio se não quiser calcular">
+        </div>
+    </div>
+
+    <!-- LINHA 3 -->
+    <div class="row">
+        <div>
+            <label>ICMS (%):</label>
+            <input type="number" id="icms" placeholder="Ex: 12">
+        </div>
+
+        <div>
+            <label>PIS (%):</label>
+            <input type="number" id="pis" placeholder="Ex: 1.65">
+        </div>
+    </div>
+
+    <!-- LINHA 4 -->
+    <div class="row">
+        <div>
+            <label>COFINS (%):</label>
+            <input type="number" id="cofins" placeholder="Ex: 7.6">
+        </div>
+
+        <div>
+            <label>Margem de Lucro (%):</label>
+            <input type="number" id="lucro" placeholder="Ex: 20">
+        </div>
+    </div>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
