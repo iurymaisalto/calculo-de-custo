@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>Cálculo de Custo</title>
+</head>
+<body>
+<h2>Calculadora de Custo Completa</h2>
+<form method='POST'>
+
+<h3>Matéria-prima</h3>
+<label>Preço por KG:</label><input name='preco_kg' required><br>
+<label>Peso do produto (g):</label><input name='peso_g' required><br>
+
+<h3>Produção</h3>
+<label>Hora máquina (R$/h):</label><input name='hora_maquina' required><br>
+<label>Tempo por ciclo (segundos):</label><input name='tempo_seg' required><br>
+<label>Cavidades (peças por ciclo):</label><input name='cavidades' required><br>
+
+<h3>Embalagem</h3>
+<label>Preço do Kg da embalagem (R$):</label><input name='preco_embalagem' required><br>
+<label>Peso da embalagem (g):</label><input name='peso_embalagem' required><br>
+
+<h3>Ajustes</h3>
+<label>Perda (%):</label><input name='perda' required><br>
+<label>Impostos (%):</label><input name='impostos' required><br>
+<label>Margem de lucro (%):</label><input name='lucro' required><br>
+
+<button type='submit'>Calcular</button>
+</form>
+
+{% if resultado %}
+    <h3>Custo Final Unitário: R$ {{resultado}}</h3>
+{% endif %}
+</body>
+</html>
