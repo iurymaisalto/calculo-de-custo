@@ -133,6 +133,10 @@
             <p>% Perda: {{ request.form.porcent_perca }}%</p>
             <p>Hora máquina: R$ {{ request.form.hora_maquina }}</p>
             <p>Embalagem: R$ {{ request.form.preco_emb }} /kg</p>
+            <p>ICMS aplicado: {{ request.form.icms }}%</p>
+            <p>PIS aplicado: {{ request.form.pis }}%</p>
+            <p>COFINS aplicado: {{ request.form.cofins }}%</p>
+            <p>Margem aplicada: {{ request.form.margem }}%</p>
             <hr>
             <h2>💰 Preço Final por Unidade</h2>
             <p style="font-size:26px; font-weight:bold;">R$ {{ custo_final_unit }}</p>
