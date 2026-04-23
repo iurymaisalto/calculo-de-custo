@@ -94,7 +94,7 @@ def index():
         # 🔹 Aplicação da margem
         # -------------------------
         custo_margem_unit = (1 + margem )/ 100
-        custo_final_unit = custo_unit_sem_lucro * custo_margem_unit
+        custo_final_unit = custo_unit_sem_lucro * (1 + margem / 100)
 
         # -------------------------
         # 🔹 Produção total
