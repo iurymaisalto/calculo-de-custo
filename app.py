@@ -93,7 +93,8 @@ def index():
         # -------------------------
         # 🔹 Aplicação da margem
         # -------------------------
-        custo_final_unit = custo_unit_sem_lucro * (1 + margem / 100)
+        custo_margem_unit= (1 + margem / 100)
+        custo_final_unit = custo_unit_sem_lucro * custo_margem_unit
 
         # -------------------------
         # 🔹 Produção total
@@ -123,6 +124,7 @@ def index():
             custo_emb_unit=round(custo_emb_unit, 4),
             custo_perca_unit=round(custo_perca_unit, 4),
             custo_imposto_unit=round(custo_imposto_unit, 4),
+            custo_margem_unit=round(custo_margem_unit, 4),
             material_total_kg=round(material_total_kg, 3),
             master_total_kg=round(master_total_kg, 3),
             perca_total_kg=round(perca_total_kg, 3),
